@@ -78,7 +78,7 @@ class ASPP(nn.Module):
         modules.append(ASPPConv(in_channels, out_channels, rate3))
         modules.append(ASPPPooling(in_channels, out_channels))
 
-        self.convs = nn.ModuleList(modules)
+        self.convs = nn.ModuleList(modules) #ModelList没有实现forward方法，需要在forward中实现；
 
         self.project = nn.Sequential(
             nn.Conv2d(5 * out_channels, out_channels, 1, bias=False),
@@ -91,4 +91,4 @@ class ASPP(nn.Module):
         for conv in self.convs:
             res.append(conv(x))
         res = torch.cat(res, dim=1)
-        return self.project(res)
+        return self.project(res) #Sequential实现了forward方法，可以直接调用
